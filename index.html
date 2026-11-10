@@ -45,7 +45,6 @@
                 radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
         }
 
-        /* Top Bar */
         header {
             position: sticky;
             top: 0;
@@ -102,6 +101,12 @@
             border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .btn-add-asset {
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
             color: white;
@@ -123,7 +128,63 @@
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
 
-        /* Hero & Search Section */
+        .btn-roblox-login {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-roblox-login:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 30px;
+        }
+
+        .user-avatar-img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #202b42;
+            object-fit: cover;
+        }
+
+        .user-name-text {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 4px;
+        }
+
+        .btn-logout:hover {
+            color: #ef4444;
+        }
+
+        /* Hero Section */
         .hero {
             max-width: 1200px;
             margin: 0 auto;
@@ -179,7 +240,6 @@
             font-size: 18px;
         }
 
-        /* Filter Tabs */
         .filters-section {
             max-width: 1200px;
             margin: 20px auto 30px;
@@ -232,7 +292,6 @@
             color: var(--text-muted);
         }
 
-        /* Grid Cards */
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -255,8 +314,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.25 ease;
-            position: relative;
+            transition: all 0.25s ease;
         }
 
         .card:hover {
@@ -319,7 +377,6 @@
             margin-bottom: 16px;
             max-height: 60px;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .card-footer {
@@ -339,17 +396,12 @@
             color: var(--text-muted);
         }
 
-        .author-avatar {
-            width: 22px;
-            height: 22px;
+        .author-avatar-img {
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #4f46e5, #06b6d4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: white;
-            font-weight: 700;
+            object-fit: cover;
+            background: var(--bg-input);
         }
 
         .btn-copy {
@@ -373,14 +425,14 @@
             color: white;
         }
 
-        /* Modal Form */
+        /* Modals */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(8px);
             z-index: 100;
             display: flex;
@@ -402,7 +454,7 @@
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
             width: 100%;
-            max-width: 500px;
+            max-width: 460px;
             padding: 24px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
             transform: translateY(20px);
@@ -483,7 +535,6 @@
             margin-top: 8px;
         }
 
-        /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -509,7 +560,6 @@
             opacity: 1;
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -521,13 +571,6 @@
             font-size: 40px;
             margin-bottom: 12px;
             opacity: 0.4;
-        }
-
-        @media (max-width: 640px) {
-            .hero h1 { font-size: 24px; }
-            .hero p { font-size: 13px; }
-            .filters-section { flex-direction: column; align-items: flex-start; }
-            .modal { padding: 18px; }
         }
     </style>
 </head>
@@ -541,11 +584,21 @@
                     <i class="fa-solid fa-code"></i>
                 </div>
                 <span class="logo-text">StudioLite<span style="color: var(--accent-blue);">Hub</span></span>
-                <span class="logo-badge">v1.0</span>
+                <span class="logo-badge">v1.1</span>
             </div>
-            <button class="btn-add-asset" onclick="openModal()">
-                <i class="fa-solid fa-plus"></i> Share Asset
-            </button>
+            
+            <div class="header-actions">
+                <!-- Dynamic Login Area -->
+                <div id="authContainer">
+                    <button class="btn-roblox-login" onclick="openLoginModal()">
+                        <i class="fa-solid fa-user-check"></i> Connect Roblox
+                    </button>
+                </div>
+                
+                <button class="btn-add-asset" onclick="openModal()">
+                    <i class="fa-solid fa-plus"></i> Share Asset
+                </button>
+            </div>
         </div>
     </header>
 
@@ -572,14 +625,32 @@
         <div class="stats-counter" id="itemCounter">Menampilkan 0 asset</div>
     </div>
 
-    <!-- Cards Grid Section -->
+    <!-- Cards Grid -->
     <main class="main-container">
-        <div class="cards-grid" id="cardsGrid">
-            <!-- Cards akan di-generate oleh JavaScript -->
-        </div>
+        <div class="cards-grid" id="cardsGrid"></div>
     </main>
 
-    <!-- Modal Form Share Asset -->
+    <!-- Modal Login Roblox -->
+    <div class="modal-overlay" id="loginModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-gamepad" style="color: var(--accent-blue);"></i> Connect Roblox Account</h3>
+                <button class="btn-close" onclick="closeLoginModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleRobloxLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Username Roblox Kamu</label>
+                    <input type="text" id="robloxUsernameInput" class="form-input" placeholder="Masukkan Username Roblox..." required>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4;">
+                    Sistem akan mengambil data profil resmi dan Avatar Headshot kamu langsung dari API Roblox.
+                </p>
+                <button type="submit" class="btn-submit" id="btnLoginSubmit">Connect Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Share Asset -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -609,8 +680,8 @@
                     <textarea id="formCode" class="form-textarea" placeholder="Paste kode Lua, rbxassetid://..., atau link di sini..." required></textarea>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Nama Pembuat (Uploader)</label>
-                    <input type="text" id="formAuthor" class="form-input" placeholder="Nama kamu atau handle" required>
+                    <label class="form-label">Nama Uploader</label>
+                    <input type="text" id="formAuthor" class="form-input" placeholder="Nama kamu atau handle Roblox" required>
                 </div>
                 <button type="submit" class="btn-submit">Posting Sekarang</button>
             </form>
@@ -624,7 +695,7 @@
     </div>
 
     <script>
-        // Data Awal (Sample Data)
+        let currentUser = JSON.parse(localStorage.getItem('roblox_user_session')) || null;
         let initialData = [
             {
                 id: 1,
@@ -632,7 +703,8 @@
                 category: "gui",
                 desc: "Script GUI Leaderboard modern anti lag dengan animasi UI CoreGui toggle.",
                 code: 'local UI = script.Parent\nUI.Visible = true',
-                author: "Kenz"
+                author: "Kenz",
+                avatarUrl: "https://tr.rbxcdn.com/30bf59a72b84260f86249339e0839e55/150/150/AvatarHeadshot/Png"
             },
             {
                 id: 2,
@@ -640,31 +712,111 @@
                 category: "assetid",
                 desc: "Decal Texture ID transparan untuk efek headless custom avatar.",
                 code: "rbxassetid://134079012",
-                author: "RBLXDev"
-            },
-            {
-                id: 3,
-                title: "Wallhop & Flick Helper Script",
-                category: "script",
-                desc: "Script pembantu kalkulasi posisi Raycast untuk latihan wallhop obby.",
-                code: 'local Ray = Ray.new(HumanoidRootPart.Position, Vector3.new(0,-3,0))',
-                author: "ObbyKing"
+                author: "RBLXDev",
+                avatarUrl: ""
             }
         ];
 
         let assets = JSON.parse(localStorage.getItem('studio_lite_assets')) || initialData;
         let activeCategory = 'all';
 
-        // Save ke LocalStorage
         function saveData() {
             localStorage.setItem('studio_lite_assets', JSON.stringify(assets));
         }
 
-        // Render Cards
+        // --- Roblox Account Auth Integration ---
+        function updateAuthUI() {
+            const container = document.getElementById('authContainer');
+            if (currentUser) {
+                container.innerHTML = `
+                    <div class="user-profile-badge">
+                        <img src="${currentUser.avatarUrl}" class="user-avatar-img" alt="Avatar">
+                        <span class="user-name-text">${escapeHtml(currentUser.displayName || currentUser.username)}</span>
+                        <button class="btn-logout" onclick="logoutRoblox()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    </div>
+                `;
+                document.getElementById('formAuthor').value = currentUser.username;
+            } else {
+                container.innerHTML = `
+                    <button class="btn-roblox-login" onclick="openLoginModal()">
+                        <i class="fa-solid fa-user-check"></i> Connect Roblox
+                    </button>
+                `;
+                document.getElementById('formAuthor').value = '';
+            }
+        }
+
+        async function handleRobloxLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('robloxUsernameInput').value.trim();
+            const btnSubmit = document.getElementById('btnLoginSubmit');
+            if(!username) return;
+
+            btnSubmit.innerText = "Connecting...";
+            btnSubmit.disabled = true;
+
+            try {
+                // Fetch User ID by Username via CorsProxy
+                const userRes = await fetch(`https://corsproxy.io/?https://users.roblox.com/v1/usernames/users`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usernames: [username], excludeBannedUsers: true })
+                });
+                const userData = await userRes.json();
+
+                if (!userData.data || userData.data.length === 0) {
+                    alert("Username Roblox tidak ditemukan!");
+                    btnSubmit.innerText = "Connect Account";
+                    btnSubmit.disabled = false;
+                    return;
+                }
+
+                const robloxUser = userData.data[0];
+
+                // Fetch Avatar Headshot
+                const avatarRes = await fetch(`https://corsproxy.io/?https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${robloxUser.id}&size=150x150&format=Png&isCircular=false`);
+                const avatarData = await avatarRes.json();
+                const avatarUrl = avatarData.data[0]?.imageUrl || '';
+
+                currentUser = {
+                    id: robloxUser.id,
+                    username: robloxUser.name,
+                    displayName: robloxUser.displayName,
+                    avatarUrl: avatarUrl
+                };
+
+                localStorage.setItem('roblox_user_session', JSON.stringify(currentUser));
+                updateAuthUI();
+                closeLoginModal();
+                showToast(`Selamat datang, ${currentUser.displayName}!`);
+            } catch (err) {
+                console.error(err);
+                alert("Gagal menghubungkan akun. Periksa koneksi internet.");
+            } finally {
+                btnSubmit.innerText = "Connect Account";
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function logoutRoblox() {
+            currentUser = null;
+            localStorage.removeItem('roblox_user_session');
+            updateAuthUI();
+            showToast("Berhasil logout");
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModalOverlay').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModalOverlay').classList.remove('active');
+        }
+
+        // --- Render Assets Cards ---
         function renderCards() {
             const grid = document.getElementById('cardsGrid');
             const searchValue = document.getElementById('searchInput').value.toLowerCase();
-            
             grid.innerHTML = '';
 
             const filtered = assets.filter(item => {
@@ -682,7 +834,7 @@
                 grid.innerHTML = `
                     <div class="empty-state">
                         <i class="fa-solid fa-box-open"></i>
-                        <p>Asset tidak ditemukan. Cobalah kata kunci lain atau bagikan asset baru!</p>
+                        <p>Asset tidak ditemukan. Hubungkan akun dan bagikan script baru!</p>
                     </div>
                 `;
                 return;
@@ -701,6 +853,8 @@
                     default: categoryLabel = 'Lainnya'; catClass = 'cat-other'; break;
                 }
 
+                const avatarSrc = item.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.author)}&background=3b82f6&color=fff`;
+
                 card.innerHTML = `
                     <div>
                         <div class="card-header">
@@ -712,7 +866,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="author-info">
-                            <div class="author-avatar">${item.author.charAt(0).toUpperCase()}</div>
+                            <img src="${avatarSrc}" class="author-avatar-img" alt="Author">
                             <span>${escapeHtml(item.author)}</span>
                         </div>
                         <button class="btn-copy" onclick="copyToClipboard('${escapeJs(item.code)}')">
@@ -724,7 +878,6 @@
             });
         }
 
-        // Filter Category
         function setCategory(cat, btn) {
             activeCategory = cat;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -732,7 +885,6 @@
             renderCards();
         }
 
-        // Copy Text Function
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast("Berhasil disalin ke clipboard!");
@@ -741,7 +893,6 @@
             });
         }
 
-        // Modal Controls
         function openModal() {
             document.getElementById('modalOverlay').classList.add('active');
         }
@@ -750,7 +901,6 @@
             document.getElementById('modalOverlay').classList.remove('active');
         }
 
-        // Form Submit
         function handleFormSubmit(e) {
             e.preventDefault();
             const title = document.getElementById('formTitle').value;
@@ -765,7 +915,8 @@
                 category,
                 desc,
                 code,
-                author
+                author,
+                avatarUrl: currentUser ? currentUser.avatarUrl : ''
             };
 
             assets.unshift(newItem);
@@ -773,10 +924,10 @@
             renderCards();
             closeModal();
             document.getElementById('addAssetForm').reset();
+            if (currentUser) document.getElementById('formAuthor').value = currentUser.username;
             showToast("Asset berhasil ditambahkan!");
         }
 
-        // Toast Helper
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
@@ -786,7 +937,6 @@
             }, 2500);
         }
 
-        // Utility to prevent XSS
         function escapeHtml(str) {
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
@@ -794,7 +944,8 @@
             return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n');
         }
 
-        // Initial Load
+        // Init App State
+        updateAuthUI();
         renderCards();
     </script>
 </body>
