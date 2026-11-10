@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Lite Hub - Assets & Scripts Sharing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-body: #0b0f19;
+            --bg-card: #151c2c;
+            --bg-card-hover: #1c263c;
+            --bg-input: #111726;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.3);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+        }
+
+        /* Top Bar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(11, 15, 25, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-badge {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-add-asset {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-add-asset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Hero & Search Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 15px;
+            max-width: 550px;
+            margin: 0 auto 28px;
+            line-height: 1.5;
+        }
+
+        .search-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px 16px 50px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        /* Filter Tabs */
+        .filters-section {
+            max-width: 1200px;
+            margin: 20px auto 30px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: var(--bg-card-hover);
+        }
+
+        .tab-btn.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .stats-counter {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Grid Cards */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25 ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-glow);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            background: var(--bg-card-hover);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .badge-category {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .cat-script { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .cat-assetid { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .cat-gui { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        .cat-other { background: rgba(139, 92, 246, 0.15); color: #c084fc; }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .code-preview {
+            background: var(--bg-input);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-cyan);
+            word-break: break-all;
+            margin-bottom: 16px;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 12px;
+            margin-top: auto;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .author-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        /* Modal Form */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 200;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            grid-column: 1 / -1;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 24px; }
+            .hero p { font-size: 13px; }
+            .filters-section { flex-direction: column; align-items: flex-start; }
+            .modal { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <span class="logo-text">StudioLite<span style="color: var(--accent-blue);">Hub</span></span>
+                <span class="logo-badge">v1.0</span>
+            </div>
+            <button class="btn-add-asset" onclick="openModal()">
+                <i class="fa-solid fa-plus"></i> Share Asset
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Tempat Share Script & Asset Roblox</h1>
+        <p>Kumpulan script, Asset ID, GUI component, dan resources gratis khusus untuk Roblox Studio Lite!</p>
+        
+        <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" class="search-bar" placeholder="Cari script, asset ID, nama uploader..." oninput="renderCards()">
+        </div>
+    </section>
+
+    <!-- Category Filters -->
+    <div class="filters-section">
+        <div class="filter-tabs">
+            <button class="tab-btn active" onclick="setCategory('all', this)">Semua</button>
+            <button class="tab-btn" onclick="setCategory('script', this)">Luau Script</button>
+            <button class="tab-btn" onclick="setCategory('assetid', this)">Asset ID</button>
+            <button class="tab-btn" onclick="setCategory('gui', this)">GUI Components</button>
+            <button class="tab-btn" onclick="setCategory('other', this)">Lainnya</button>
+        </div>
+        <div class="stats-counter" id="itemCounter">Menampilkan 0 asset</div>
+    </div>
+
+    <!-- Cards Grid Section -->
+    <main class="main-container">
+        <div class="cards-grid" id="cardsGrid">
+            <!-- Cards akan di-generate oleh JavaScript -->
+        </div>
+    </main>
+
+    <!-- Modal Form Share Asset -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Share Asset / Script Baru</h3>
+                <button class="btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="addAssetForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Judul Asset / Script</label>
+                    <input type="text" id="formTitle" class="form-input" placeholder="Contoh: Custom Hotbar System UI" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kategori</label>
+                    <select id="formCategory" class="form-select">
+                        <option value="script">Luau Script</option>
+                        <option value="assetid">Asset ID (Decal/Sound/Mesh)</option>
+                        <option value="gui">GUI Component</option>
+                        <option value="other">Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Deskripsi Singkat</label>
+                    <input type="text" id="formDesc" class="form-input" placeholder="Jelaskan fungsi asset ini..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Isi Script / ID / Link</label>
+                    <textarea id="formCode" class="form-textarea" placeholder="Paste kode Lua, rbxassetid://..., atau link di sini..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nama Pembuat (Uploader)</label>
+                    <input type="text" id="formAuthor" class="form-input" placeholder="Nama kamu atau handle" required>
+                </div>
+                <button type="submit" class="btn-submit">Posting Sekarang</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Berhasil disalin ke clipboard!</span>
+    </div>
+
+    <script>
+        // Data Awal (Sample Data)
+        let initialData = [
+            {
+                id: 1,
+                title: "Smooth Leaderboard GUI Script",
+                category: "gui",
+                desc: "Script GUI Leaderboard modern anti lag dengan animasi UI CoreGui toggle.",
+                code: 'local UI = script.Parent\nUI.Visible = true',
+                author: "Kenz"
+            },
+            {
+                id: 2,
+                title: "Headless Horseman Asset Texture",
+                category: "assetid",
+                desc: "Decal Texture ID transparan untuk efek headless custom avatar.",
+                code: "rbxassetid://134079012",
+                author: "RBLXDev"
+            },
+            {
+                id: 3,
+                title: "Wallhop & Flick Helper Script",
+                category: "script",
+                desc: "Script pembantu kalkulasi posisi Raycast untuk latihan wallhop obby.",
+                code: 'local Ray = Ray.new(HumanoidRootPart.Position, Vector3.new(0,-3,0))',
+                author: "ObbyKing"
+            }
+        ];
+
+        let assets = JSON.parse(localStorage.getItem('studio_lite_assets')) || initialData;
+        let activeCategory = 'all';
+
+        // Save ke LocalStorage
+        function saveData() {
+            localStorage.setItem('studio_lite_assets', JSON.stringify(assets));
+        }
+
+        // Render Cards
+        function renderCards() {
+            const grid = document.getElementById('cardsGrid');
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            
+            grid.innerHTML = '';
+
+            const filtered = assets.filter(item => {
+                const matchesCat = activeCategory === 'all' || item.category === activeCategory;
+                const matchesSearch = item.title.toLowerCase().includes(searchValue) ||
+                                      item.desc.toLowerCase().includes(searchValue) ||
+                                      item.author.toLowerCase().includes(searchValue) ||
+                                      item.code.toLowerCase().includes(searchValue);
+                return matchesCat && matchesSearch;
+            });
+
+            document.getElementById('itemCounter').innerText = `Menampilkan ${filtered.length} asset`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-box-open"></i>
+                        <p>Asset tidak ditemukan. Cobalah kata kunci lain atau bagikan asset baru!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let categoryLabel = '';
+                let catClass = '';
+                switch(item.category) {
+                    case 'script': categoryLabel = 'Script'; catClass = 'cat-script'; break;
+                    case 'assetid': categoryLabel = 'Asset ID'; catClass = 'cat-assetid'; break;
+                    case 'gui': categoryLabel = 'GUI'; catClass = 'cat-gui'; break;
+                    default: categoryLabel = 'Lainnya'; catClass = 'cat-other'; break;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="card-header">
+                            <h4 class="card-title">${escapeHtml(item.title)}</h4>
+                            <span class="badge-category ${catClass}">${categoryLabel}</span>
+                        </div>
+                        <p class="card-desc">${escapeHtml(item.desc)}</p>
+                        <div class="code-preview">${escapeHtml(item.code)}</div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="author-info">
+                            <div class="author-avatar">${item.author.charAt(0).toUpperCase()}</div>
+                            <span>${escapeHtml(item.author)}</span>
+                        </div>
+                        <button class="btn-copy" onclick="copyToClipboard('${escapeJs(item.code)}')">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter Category
+        function setCategory(cat, btn) {
+            activeCategory = cat;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCards();
+        }
+
+        // Copy Text Function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Berhasil disalin ke clipboard!");
+            }).catch(() => {
+                showToast("Gagal menyalin text.");
+            });
+        }
+
+        // Modal Controls
+        function openModal() {
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // Form Submit
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('formTitle').value;
+            const category = document.getElementById('formCategory').value;
+            const desc = document.getElementById('formDesc').value;
+            const code = document.getElementById('formCode').value;
+            const author = document.getElementById('formAuthor').value;
+
+            const newItem = {
+                id: Date.now(),
+                title,
+                category,
+                desc,
+                code,
+                author
+            };
+
+            assets.unshift(newItem);
+            saveData();
+            renderCards();
+            closeModal();
+            document.getElementById('addAssetForm').reset();
+            showToast("Asset berhasil ditambahkan!");
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Utility to prevent XSS
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+        function escapeJs(str) {
+            return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n');
+        }
+
+        // Initial Load
+        renderCards();
+    </script>
+</body>
+</html>
